@@ -1,0 +1,15 @@
+{
+  "name": "openlp-kids-pager",
+  "version": "1.0.0",
+  "description": "OpenLp Kids Pager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "bbankes@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "sequelize": "4.6.0",
+    "sqlite3": "3.1.9"
+  }
+}

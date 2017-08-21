@@ -1,0 +1,47 @@
+- name: Setup to create 
+  hosts: local
+
+  tasks:
+    - name: Download node v8 if not already downloaded
+      get_url:
+        url: https://deb.nodesource.com/setup_8.x
+        dest: ~/setup_8.x
+        mode: u+x
+        force: yes
+      become: yes
+
+    - name: Register whether npm package is installed
+      command: dpkg-query -l npm
+      register: npm_installed_result
+      ignore_errors: yes
+      changed_when: no
+
+    - name: Setup node v8 repository
+      shell: /root/setup_8.x
+      when: npm_installed_result.rc #rc=return code
+      become: yes
+
+    - name: Ensure node is installed
+      apt: name=nodejs state=latest
+      become: yes
+
+    - name: Ensure latest npm is installed
+      npm: name=npm global=yes state=latest
+      become: yes
+
+# Cannot do yet
+# - versions of packages in package.json must not be prefixed for lock to be effective
+# - state=latest modifies package.json versions to be prefixed
+# - without state=latest does not run npm install
+#    - name: Install dependencies
+#      npm: path=/var/www/openlp-kids-pager/public state=latest
+
+    - name: Delete node_modules directory
+      file:
+        path: /var/www/openlp-kids-pager/public/node_modules
+        state: absent
+
+    - name: Run npm install
+      command: npm install
+      args:
+        chdir: /var/www/openlp-kids-pager/public
