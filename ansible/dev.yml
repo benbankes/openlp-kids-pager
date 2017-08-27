@@ -29,6 +29,10 @@
       npm: name=npm global=yes state=latest
       become: yes
 
+    - name: Ensure latest node-gyp is installed
+      npm: name=node-gyp global=yes state=latest
+      become: yes
+
 # Cannot do yet
 # - versions of packages in package.json must not be prefixed for lock to be effective
 # - state=latest modifies package.json versions to be prefixed
